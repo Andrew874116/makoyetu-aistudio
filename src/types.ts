@@ -77,3 +77,17 @@ export interface UserBadge {
   description: string;
   dateEarned: string;
 }
+
+export type UserRole = 'tenant' | 'landlord' | 'admin';
+
+export interface UserProfile {
+  name: string;
+  age: number;
+  role: UserRole;
+  phone: string;
+  email: string;
+  isKycVerified: boolean;
+  avatar: string;
+  nationalId?: string;
+}
+

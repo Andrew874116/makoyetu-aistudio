@@ -1,4 +1,4 @@
-import { Property, Reel, CommunityReport, UserQuest, UserBadge } from './types';
+import { Property, Reel, CommunityReport, UserQuest, UserBadge, UserProfile } from './types';
 
 export const INITIAL_PROPERTIES: Property[] = [
   {
@@ -262,3 +262,37 @@ export const INITIAL_BADGES: UserBadge[] = [
     dateEarned: '2026-06-24'
   }
 ];
+
+export const PRESET_PROFILES: UserProfile[] = [
+  {
+    name: 'Jane Wambui',
+    age: 23,
+    role: 'tenant',
+    phone: '+254 722 555666',
+    email: 'jane.wambui@student.usiu.ac.ke',
+    isKycVerified: true,
+    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80',
+    nationalId: 'ID-39123456'
+  },
+  {
+    name: 'Andrew Muthengi',
+    age: 28,
+    role: 'landlord',
+    phone: '+254 712 345678',
+    email: 'andrew.muthengi@makao.co.ke',
+    isKycVerified: true,
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
+    nationalId: 'ID-35678912'
+  },
+  {
+    name: 'Ecosystem Administrator',
+    age: 35,
+    role: 'admin',
+    phone: '+254 700 000111',
+    email: 'security.compliance@makao.go.ke',
+    isKycVerified: true,
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80',
+    nationalId: 'ID-28112233'
+  }
+];
+

@@ -1,6 +1,6 @@
 {
   "name": "Makao Yetu",
-  "description": "Africa's first AI-powered property ecosystem for Kenya, combining verified listings, vertical video reels, maps, salary-based recommendations, and intelligent consulting.",
+  "description": "Africa's #1 verified property ecosystem, combining verified listings, vertical video walkthrough reels, maps, custom salary-based budget calculators, and intelligent neighborhood protection alerts.",
   "requestFramePermissions": ["geolocation"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -9,26 +9,26 @@ function renderMarkdown(text: string) {
   return lines.map((line, idx) => {
     // Headers
     if (line.trim().startsWith('###')) {
-      return <h4 key={idx} className="text-base font-bold text-white mt-4 mb-2">{line.replace('###', '').trim()}</h4>;
+      return <h4 key={idx} className="text-sm font-bold text-slate-800 mt-4 mb-1.5">{line.replace('###', '').trim()}</h4>;
     }
     if (line.trim().startsWith('##')) {
-      return <h3 key={idx} className="text-lg font-bold text-white mt-5 mb-3 border-b border-slate-800 pb-1">{line.replace('##', '').trim()}</h3>;
+      return <h3 key={idx} className="text-base font-bold text-slate-900 mt-5 mb-2.5 border-b border-slate-200 pb-1">{line.replace('##', '').trim()}</h3>;
     }
     if (line.trim().startsWith('#')) {
-      return <h2 key={idx} className="text-xl font-bold text-emerald-400 mt-6 mb-4">{line.replace('#', '').trim()}</h2>;
+      return <h2 key={idx} className="text-lg font-bold text-emerald-700 mt-5 mb-3">{line.replace('#', '').trim()}</h2>;
     }
     
     // Bold highlights
     let parsedLine: React.ReactNode = line;
     if (line.includes('**')) {
       const parts = line.split('**');
-      parsedLine = parts.map((part, i) => i % 2 === 1 ? <strong key={i} className="text-amber-400 font-bold">{part}</strong> : part);
+      parsedLine = parts.map((part, i) => i % 2 === 1 ? <strong key={i} className="text-emerald-800 font-bold">{part}</strong> : part);
     }
 
     // Bullet points
     if (line.trim().startsWith('-') || line.trim().startsWith('*')) {
       return (
-        <ul key={idx} className="list-disc pl-5 my-1.5 text-slate-300 text-xs">
+        <ul key={idx} className="list-disc pl-5 my-1 text-slate-700 text-xs">
           <li>{parsedLine}</li>
         </ul>
       );
@@ -37,7 +37,7 @@ function renderMarkdown(text: string) {
     // Numbered lists
     if (/^\d+\./.test(line.trim())) {
       return (
-        <ol key={idx} className="list-decimal pl-5 my-1.5 text-slate-300 text-xs">
+        <ol key={idx} className="list-decimal pl-5 my-1 text-slate-700 text-xs">
           <li>{parsedLine}</li>
         </ol>
       );
@@ -48,9 +48,9 @@ function renderMarkdown(text: string) {
       const columns = line.split('|').map(col => col.trim()).filter(Boolean);
       if (columns.length > 0 && !line.includes('---')) {
         return (
-          <div key={idx} className="grid grid-cols-2 gap-2 bg-slate-950 p-2 rounded border border-slate-800/60 my-1 text-xs">
-            <span className="text-slate-400 font-medium">{columns[0]}</span>
-            <span className="text-white font-mono font-semibold">{columns[1]}</span>
+          <div key={idx} className="grid grid-cols-2 gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200/60 my-1 text-xs text-slate-800">
+            <span className="text-slate-500 font-medium">{columns[0]}</span>
+            <span className="text-slate-800 font-sans font-bold">{columns[1]}</span>
           </div>
         );
       }
@@ -59,7 +59,7 @@ function renderMarkdown(text: string) {
 
     if (line.trim() === '') return <div key={idx} className="h-2"></div>;
 
-    return <p key={idx} className="text-xs text-slate-300 leading-relaxed my-1">{parsedLine}</p>;
+    return <p key={idx} className="text-xs text-slate-700 leading-relaxed my-1">{parsedLine}</p>;
   });
 }
 
@@ -82,7 +82,7 @@ export default function AiTools() {
   // AI Advisor States
   const [consultQuestion, setConsultQuestion] = useState('');
   const [consultHistory, setConsultHistory] = useState<{ sender: 'user' | 'ai', text: string }[]>([
-    { sender: 'ai', text: 'Jambo! I am the Makao Yetu Property Advisor. Ask me anything about Kenyan land transactions, title searches, rent laws, or how to avoid common rental deposit scams.' }
+    { sender: 'ai', text: 'Jambo! I am your Makao Yetu Property Advisor. Ask me anything about Kenyan land transactions, title searches, rent laws, or how to avoid common rental deposit scams.' }
   ]);
 
   // House Inspector States
@@ -103,7 +103,7 @@ export default function AiTools() {
       setRecommendationResult(data.recommendations);
       setCalculatedBudget(data.housingBudget);
     } catch (err: any) {
-      setError(err.message || "Failed to fetch AI recommendation.");
+      setError(err.message || "Failed to fetch recommendation.");
     } finally {
       setLoading(false);
     }
@@ -147,7 +147,7 @@ export default function AiTools() {
       if (data.error) throw new Error(data.error);
       setConsultHistory(prev => [...prev, { sender: 'ai', text: data.answer }]);
     } catch (err: any) {
-      setConsultHistory(prev => [...prev, { sender: 'ai', text: `⚠️ Error matching AI response: ${err.message || 'Consultation route offline'}` }]);
+      setConsultHistory(prev => [...prev, { sender: 'ai', text: `⚠️ Connection Issue: ${err.message || 'Consultation route offline'}` }]);
     } finally {
       setLoading(false);
     }
@@ -175,21 +175,21 @@ export default function AiTools() {
   return (
     <div className="max-w-6xl mx-auto py-6 px-4">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-white flex items-center justify-center gap-2">
-          <Sparkles className="text-emerald-500 w-6 h-6 animate-pulse" /> Makao Yetu AI Advisory Hub
+        <h2 className="text-2xl font-bold text-slate-950 flex items-center justify-center gap-2 font-display">
+          <Sparkles className="text-emerald-600 w-6 h-6 animate-pulse" /> Makao Yetu Premium Advisor
         </h2>
-        <p className="text-sm text-slate-400">
-          Unlock server-side Gemini intelligence tailored for local housing dynamics, land title verifications, and financial planning.
+        <p className="text-sm text-slate-600">
+          Tailored property intelligence for local housing dynamics, land title verifications, and financial planning.
         </p>
       </div>
 
       {/* AI Tool Sub-Navigator */}
-      <div className="flex flex-wrap gap-2 justify-center mb-6 bg-slate-950 p-1.5 rounded-2xl border border-slate-800">
+      <div className="flex flex-wrap gap-2 justify-center mb-6 bg-slate-100 p-1.5 rounded-2xl border border-slate-200 shadow-inner">
         {[
           { id: 'recommend', label: 'Relocation Recommender', icon: DollarSign },
           { id: 'soil', label: 'Soil & Rain Planner', icon: Sprout },
-          { id: 'consult', label: 'AI Housing Consultant', icon: MessageSquare },
-          { id: 'inspect', label: 'House Issue Inspector', icon: ShieldAlert }
+          { id: 'consult', label: 'Property Consultant', icon: MessageSquare },
+          { id: 'inspect', label: 'Defect Inspector', icon: ShieldAlert }
         ].map(sub => {
           const Icon = sub.icon;
           const isSelected = activeSubtab === sub.id;
@@ -202,8 +202,8 @@ export default function AiTools() {
               }}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                 isSelected 
-                  ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-950/20' 
-                  : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                  ? 'bg-emerald-600 text-white shadow-md' 
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -217,29 +217,29 @@ export default function AiTools() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
         {/* Left Input Configuration (Columns 1-5) */}
-        <div className="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-5 text-white shadow-xl">
+        <div className="lg:col-span-5 clay-card p-6 text-slate-800">
           
           {activeSubtab === 'recommend' && (
             <div className="space-y-4">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-1">Salary Relocation Parameters</h3>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Salary Relocation Parameters</h3>
               
               <div>
-                <label className="text-xs text-slate-400 font-mono block mb-1.5">Monthly Net Salary (Ksh)</label>
+                <label className="text-xs text-slate-600 font-semibold block mb-1.5">Monthly Net Salary (Ksh)</label>
                 <input
                   type="number"
                   value={salary}
                   onChange={(e) => setSalary(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2 px-3 text-xs focus:outline-none focus:border-emerald-500 font-mono"
+                  className="w-full clay-input py-2.5 px-3.5 text-xs focus:outline-none"
                   placeholder="e.g. 50000"
                 />
               </div>
 
               <div>
-                <label className="text-xs text-slate-400 font-mono block mb-1.5">Dependents Status</label>
+                <label className="text-xs text-slate-600 font-semibold block mb-1.5">Dependents Status</label>
                 <select
                   value={dependents}
                   onChange={(e) => setDependents(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2 px-3 text-xs focus:outline-none focus:border-emerald-500 text-slate-300"
+                  className="w-full clay-input py-2.5 px-3.5 text-xs focus:outline-none text-slate-700 font-semibold"
                 >
                   <option value="Single - No Dependents">Single - No Dependents</option>
                   <option value="1 Dependent">1 Dependent</option>
@@ -249,12 +249,12 @@ export default function AiTools() {
               </div>
 
               <div>
-                <label className="text-xs text-slate-400 font-mono block mb-1.5">Target Work Location</label>
+                <label className="text-xs text-slate-600 font-semibold block mb-1.5">Target Work Location</label>
                 <input
                   type="text"
                   value={workLocation}
                   onChange={(e) => setWorkLocation(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2 px-3 text-xs focus:outline-none focus:border-emerald-500"
+                  className="w-full clay-input py-2.5 px-3.5 text-xs focus:outline-none"
                   placeholder="e.g. Westlands / Kilimani / CBD"
                 />
               </div>
@@ -262,7 +262,7 @@ export default function AiTools() {
               <button
                 onClick={handleRecommendationSubmit}
                 disabled={loading}
-                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition-colors shadow shadow-emerald-950/20 flex items-center justify-center gap-1.5"
+                className="w-full clay-btn clay-btn-emerald font-bold py-3 rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 {loading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : 'Analyze & Match Estates'}
               </button>
@@ -271,14 +271,14 @@ export default function AiTools() {
 
           {activeSubtab === 'soil' && (
             <div className="space-y-4">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-1">Agro-Real Estate Parameters</h3>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Agro-Real Estate Parameters</h3>
               
               <div>
-                <label className="text-xs text-slate-400 font-mono block mb-1.5">Target Agricultural Region</label>
+                <label className="text-xs text-slate-600 font-semibold block mb-1.5">Target Agricultural Region</label>
                 <select
                   value={agriculturalRegion}
                   onChange={(e) => setAgriculturalRegion(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2 px-3 text-xs focus:outline-none focus:border-emerald-500 text-slate-300"
+                  className="w-full clay-input py-2.5 px-3.5 text-xs focus:outline-none text-slate-700 font-semibold"
                 >
                   <option value="Kitale, Trans Nzoia">Kitale (Trans Nzoia)</option>
                   <option value="Naivasha, Nakuru">Naivasha (Great Rift)</option>
@@ -289,8 +289,8 @@ export default function AiTools() {
                 </select>
               </div>
 
-              <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1.5">
-                <p className="font-semibold text-slate-300">Agricultural Checks Checklist:</p>
+              <div className="bg-emerald-50/60 p-4 rounded-xl border border-emerald-100 text-xs text-emerald-800 space-y-2 font-medium">
+                <p className="font-bold text-emerald-900">Agricultural Checks Checklist:</p>
                 <p>✓ Registry Index Map (RIM) check</p>
                 <p>✓ Title deed beacon surveys</p>
                 <p>✓ Soil fertility suitabilities</p>
@@ -299,7 +299,7 @@ export default function AiTools() {
               <button
                 onClick={handleSoilSubmit}
                 disabled={loading}
-                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition-colors shadow flex items-center justify-center gap-1.5"
+                className="w-full clay-btn clay-btn-emerald font-bold py-3 rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 {loading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : 'Generate Agro Viability Profile'}
               </button>
@@ -308,16 +308,16 @@ export default function AiTools() {
 
           {activeSubtab === 'consult' && (
             <div className="space-y-4">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-1">Kenyan Property Advisor</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Consult with our server-side LLM on tenant-landlord disputes, ArdhiSasa land transfers, rent pricing rules, and legal agreements.
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Kenyan Property Advisor</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Receive immediate guidelines on tenant-landlord disputes, ArdhiSasa land transfers, rent pricing rules, and legal agreements.
               </p>
-              <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-[11px] text-amber-300/90 space-y-2">
-                <p className="font-bold uppercase tracking-wider text-slate-400">🔥 Pro Tips to ask:</p>
-                <p className="cursor-pointer hover:underline" onClick={() => setConsultQuestion("How do I conduct an official search on ArdhiSasa?")}>
+              <div className="bg-amber-50/80 p-4 rounded-xl border border-amber-200 text-xs text-amber-800 space-y-2.5">
+                <p className="font-bold uppercase tracking-wider text-amber-900">🔥 Pro Tips to ask:</p>
+                <p className="cursor-pointer hover:underline font-medium" onClick={() => setConsultQuestion("How do I conduct an official search on ArdhiSasa?")}>
                   💡 "How do I conduct an official search on ArdhiSasa?"
                 </p>
-                <p className="cursor-pointer hover:underline" onClick={() => setConsultQuestion("Can my landlord arbitrarily increase rent in Nairobi?")}>
+                <p className="cursor-pointer hover:underline font-medium" onClick={() => setConsultQuestion("Can my landlord arbitrarily increase rent in Nairobi?")}>
                   💡 "Can my landlord arbitrarily increase rent in Nairobi?"
                 </p>
               </div>
@@ -326,14 +326,14 @@ export default function AiTools() {
 
           {activeSubtab === 'inspect' && (
             <div className="space-y-4">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-1">Tenancy Structural inspector</h3>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Structural inspector</h3>
               
               <div>
-                <label className="text-xs text-slate-400 font-mono block mb-1.5">Describe House Defect / Maintenance Issue</label>
+                <label className="text-xs text-slate-600 font-semibold block mb-1.5">Describe House Defect / Maintenance Issue</label>
                 <textarea
                   value={houseIssue}
                   onChange={(e) => setHouseIssue(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500 h-28 font-sans resize-none"
+                  className="w-full clay-input p-3 text-xs focus:outline-none h-28 resize-none text-slate-800"
                   placeholder="e.g. Mold crawling on the master bedroom ceiling and water leaking during rainy nights."
                 />
               </div>
@@ -341,9 +341,9 @@ export default function AiTools() {
               <button
                 onClick={handleInspectSubmit}
                 disabled={loading}
-                className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition-colors shadow flex items-center justify-center gap-1.5"
+                className="w-full clay-btn clay-btn-emerald font-bold py-3 rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-pointer"
               >
-                {loading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : 'Run AI Defect Audit'}
+                {loading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : 'Run Defect Audit'}
               </button>
             </div>
           )}
@@ -351,23 +351,23 @@ export default function AiTools() {
         </div>
 
         {/* Right Output Screen (Columns 6-12) */}
-        <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-5 text-white min-h-[400px] flex flex-col justify-between shadow-xl">
+        <div className="lg:col-span-7 bg-white border border-slate-200/80 rounded-3xl p-6 text-slate-800 min-h-[400px] flex flex-col justify-between shadow-lg">
           
           <div>
             {/* Header Status Bar */}
-            <div className="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
-              <span className="text-xs bg-slate-950 text-slate-400 px-3 py-1 rounded-full font-mono font-medium flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span> 
+            <div className="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
+              <span className="text-xs bg-emerald-50 text-emerald-800 px-3 py-1 rounded-full font-semibold flex items-center gap-1">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span> 
                 {activeSubtab === 'recommend' ? 'RELOCATION DECISION BOARD' :
                  activeSubtab === 'soil' ? 'AGRO GEOLOGICAL LOGS' :
-                 activeSubtab === 'consult' ? 'AI ADVISORY TRANSCRIPT' : 'STRUCTURAL DIAGNOSTICS'}
+                 activeSubtab === 'consult' ? 'PROPERTY ADVISORY TRANSCRIPT' : 'STRUCTURAL DIAGNOSTICS'}
               </span>
-              <span className="text-[10px] text-slate-500 font-mono">POWERED BY GEMINI-3.5</span>
+              <span className="text-[10px] text-slate-400 font-bold">VERIFIED ACCESS</span>
             </div>
 
             {/* Error Message banner */}
             {error && (
-              <div className="bg-red-950/40 border border-red-500/30 text-red-400 p-3.5 rounded-xl text-xs mb-4">
+              <div className="bg-rose-50 border border-rose-100 text-rose-800 p-3.5 rounded-xl text-xs mb-4">
                 {error}
               </div>
             )}
@@ -375,9 +375,9 @@ export default function AiTools() {
             {/* Outputs rendered here */}
             <div className="space-y-4">
               {loading && (
-                <div className="space-y-3 py-8 text-center">
-                  <RefreshCw className="w-10 h-10 animate-spin text-emerald-500 mx-auto" />
-                  <p className="text-xs text-slate-400">Gemini model synthesizing real estate parameters...</p>
+                <div className="space-y-3 py-12 text-center">
+                  <RefreshCw className="w-10 h-10 animate-spin text-emerald-600 mx-auto" />
+                  <p className="text-xs text-slate-500">Retrieving official real estate parameters...</p>
                 </div>
               )}
 
@@ -386,22 +386,22 @@ export default function AiTools() {
                   {recommendationResult ? (
                     <div>
                       {calculatedBudget && (
-                        <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 mb-4 flex justify-between items-center">
+                        <div className="bg-emerald-50 border border-emerald-100 p-4.5 rounded-2xl mb-4 flex justify-between items-center">
                           <div>
-                            <span className="text-[10px] text-slate-400 font-mono">SAFE HOUSING RENT CAP (30% RULE)</span>
-                            <p className="text-xl font-bold font-mono text-emerald-400">Ksh {calculatedBudget.toLocaleString()} / mo</p>
+                            <span className="text-[10px] text-emerald-800 font-bold block mb-1">RECOMMENDED MONTHLY HOUSING CAP</span>
+                            <p className="text-xl font-bold text-emerald-950">Ksh {calculatedBudget.toLocaleString()} / mo</p>
                           </div>
-                          <div className="bg-emerald-500/10 text-emerald-400 p-2 rounded text-xs font-bold">
-                            RECOMMENDED
+                          <div className="bg-emerald-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold">
+                            30% Rule Verified
                           </div>
                         </div>
                       )}
-                      <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 prose max-w-none text-slate-300">
+                      <div className="bg-slate-50/50 p-4 rounded-2xl border border-slate-200/60 prose max-w-none text-slate-700">
                         {renderMarkdown(recommendationResult)}
                       </div>
                     </div>
                   ) : (
-                    <div className="text-center py-16 text-slate-500 text-xs">
+                    <div className="text-center py-16 text-slate-400 text-xs font-semibold">
                       Enter salary above and click "Analyze & Match Estates" to generate your financial relocation plan.
                     </div>
                   )}
@@ -411,11 +411,11 @@ export default function AiTools() {
               {!loading && activeSubtab === 'soil' && (
                 <div>
                   {soilResult ? (
-                    <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 prose max-w-none text-slate-300">
+                    <div className="bg-slate-50/50 p-4 rounded-2xl border border-slate-200/60 prose max-w-none text-slate-700">
                       {renderMarkdown(soilResult)}
                     </div>
                   ) : (
-                    <div className="text-center py-16 text-slate-500 text-xs">
+                    <div className="text-center py-16 text-slate-400 text-xs font-semibold">
                       Select target agricultural region and click "Generate Agro Viability Profile".
                     </div>
                   )}
@@ -425,11 +425,11 @@ export default function AiTools() {
               {!loading && activeSubtab === 'inspect' && (
                 <div>
                   {inspectResult ? (
-                    <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 prose max-w-none text-slate-300">
+                    <div className="bg-slate-50/50 p-4 rounded-2xl border border-slate-200/60 prose max-w-none text-slate-700">
                       {renderMarkdown(inspectResult)}
                     </div>
                   ) : (
-                    <div className="text-center py-16 text-slate-500 text-xs">
+                    <div className="text-center py-16 text-slate-400 text-xs font-semibold">
                       Provide a defect/leak description and execute "Run AI Defect Audit".
                     </div>
                   )}
@@ -437,7 +437,7 @@ export default function AiTools() {
               )}
 
               {activeSubtab === 'consult' && (
-                <div className="space-y-3 max-h-[360px] overflow-y-auto pr-1">
+                <div className="space-y-3.5 max-h-[360px] overflow-y-auto pr-1">
                   {consultHistory.map((msg, i) => (
                     <div
                       key={i}
@@ -445,14 +445,14 @@ export default function AiTools() {
                         msg.sender === 'user' ? 'ml-auto items-end' : 'mr-auto items-start'
                       }`}
                     >
-                      <span className="text-[9px] text-slate-500 uppercase font-mono mb-0.5">
+                      <span className="text-[9px] text-slate-400 uppercase font-bold mb-0.5">
                         {msg.sender === 'user' ? 'You' : 'Makao Advisor'}
                       </span>
                       <div
-                        className={`p-3.5 rounded-2xl text-xs ${
+                        className={`p-3.5 rounded-2xl text-xs leading-relaxed ${
                           msg.sender === 'user'
                             ? 'bg-emerald-600 text-white rounded-tr-none'
-                            : 'bg-slate-950 border border-slate-800 text-slate-200 rounded-tl-none'
+                            : 'bg-slate-100 border border-slate-200 text-slate-800 rounded-tl-none'
                         }`}
                       >
                         {msg.sender === 'ai' ? renderMarkdown(msg.text) : msg.text}
@@ -461,9 +461,9 @@ export default function AiTools() {
                   ))}
                   {loading && (
                     <div className="mr-auto items-start max-w-[85%] flex flex-col">
-                      <span className="text-[9px] text-slate-500 uppercase font-mono mb-0.5">Makao Advisor</span>
-                      <div className="bg-slate-950 border border-slate-850 p-3 rounded-2xl text-xs text-slate-400">
-                        Advisor is typing advice...
+                      <span className="text-[9px] text-slate-400 uppercase font-bold mb-0.5">Makao Advisor</span>
+                      <div className="bg-slate-100 border border-slate-200 p-3 rounded-2xl text-xs text-slate-500 font-semibold">
+                        Advisor is formulating official guidelines...
                       </div>
                     </div>
                   )}
@@ -475,18 +475,18 @@ export default function AiTools() {
 
           {/* Bottom Chat Input Form for Consultant only */}
           {activeSubtab === 'consult' && (
-            <form onSubmit={handleConsultSubmit} className="flex gap-2 mt-4 pt-4 border-t border-slate-800/80">
+            <form onSubmit={handleConsultSubmit} className="flex gap-2.5 mt-4 pt-4 border-t border-slate-100">
               <input
                 type="text"
                 value={consultQuestion}
                 onChange={(e) => setConsultQuestion(e.target.value)}
                 placeholder="Ask about title searches, ArdhiSasa, or viewing fees safety..."
-                className="flex-1 bg-slate-950 border border-slate-800 rounded-xl py-2 px-3.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="flex-1 clay-input py-2.5 px-3.5 text-xs focus:outline-none text-slate-800"
               />
               <button
                 type="submit"
                 disabled={loading || !consultQuestion.trim()}
-                className="bg-emerald-600 hover:bg-emerald-500 p-2 text-white rounded-xl disabled:opacity-50 transition-colors"
+                className="bg-emerald-600 hover:bg-emerald-500 p-2.5 text-white rounded-xl disabled:opacity-50 transition-colors cursor-pointer"
               >
                 <Send className="w-4 h-4" />
               </button>
